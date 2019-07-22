@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Movies {% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th> Title</th>
+                <th>Production Company</th>
+                <th> Actors </th>
+                <th> Actor Pay</th>
+                <th> Actor Revenue </th>
+                <th> Company Revenue </th>
+                <th> Losses </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{MovieTitles.title}}</td>
+                <td>{{MovieTitles.Company}}</td>
+                <td>{{MovieTitles.Actor}}</td>
+                <td>{{MovieTitles.ActorPay}}</td>
+                <td>{{MovieTitles.ActorRevenue}}</td>
+                <td>{{MovieTitles.CompanyRevenue}}</td>
+                <td>{{MovieTitles.losses}}</td>
+            </tr>
+    </table>
+    <a href="/">Go Back</a>
+
+{% endblock %} 

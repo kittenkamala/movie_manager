@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Movie Titles{% endblock %}
+
+{% block body %}
+{% if MovieTitles %}
+    <table id="movies" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Movies</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for MovieTitle in MovieTitles %}
+                <tr>
+                    <td> {{ MovieTitle.Title }}</td>
+                    <td>
+                        <a href="/movies/{{ MovieTitle.id }}" class="btn btn-dark">Info</a>
+                        <a href="/movies/edit/{{ MovieTitle.id }}" class="btn btn-light">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+    {% else %}
+        <p> No data to display. </p>
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/main.js"></script>
+{% endblock %}
