@@ -30,7 +30,7 @@
            #     'path' => 'src/Controller/HomeController.php,'
           #  ]);
             $MovieTitles = $this->getDoctrine()->getRepository(Movie::class)->findAll();
-            $ScriptTitles = $this->getDoctrine()->getRepository(Movie::class)->findAll();
+            $ScriptTitles = $this->getDoctrine()->getRepository(Script::class)->findAll();
             return $this->render('pages/index.html.twig', array('MovieTitles' => $MovieTitles, 'ScriptTitles' => $ScriptTitles ));
         }   
 
@@ -77,11 +77,10 @@
         }
 
         /** 
-        * @Route("/scripts/{id}", name="script_info")
+        * @Route("/scripts/{id}", name="info")
         * @Method({"GET", "POST"})  
         */
 
-        // #todo page with details about an individual script
         public function script($id) {
             $script = $this->getDoctrine()->getRepository(Script::class)->find($id);
             return $this->render('pages/script.html.twig', array('ScriptTitles' => $script));
@@ -273,10 +272,138 @@
             $admin = $this->getDoctrine()->getRepository(Movie::class)->findAll();
         }
 
-                /** 
-        * @Route("/add/script/", name="script_admin")
+        /** 
+         * @Route("/add_script/", name="script_admin")
+         * @Method({"GET", "POST"})  
+         */
+    
+    //add a script to the list on /scripts
+    public function add_script(Request $request) {
+        $script_admin = new Script();
+
+        $form = $this->createFormBuilder($script_admin)
+             ->add('linesPerActor', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+             ->add('wordsPerActor', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                        'class' => 'form-control')))                           
+            ->add('mentionsPerActor', 
+                TextareaType::class, 
+                array(
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control')))
+            ->add('moviesPerYear', 
+                TextareaType::class,
+                array(
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control')))                       
+            ->add('percentOfFails', 
+                TextareaType::class, 
+                array(
+                    'required' => false,
+                    'attr' => array(
+                        'class' => 'form-control')))
+            ->add('save', 
+                SubmitType::class, 
+                array(
+                    'label' => 'Save', 
+                    'attr' => array(
+                    'class' => 'btn btn-primary mt-3')))         
+            ->getForm();
+        //submit form
+        $form->handleRequest($request);
+
+        //send data from form to database
+        if($form->isSubmitted() && $form->isValid()){
+            $script_admin = $form->getData();
+
+            //create entity manager
+            $entityManager = $this->getDoctrine()->getManager();
+            //persist the data
+            $entityManager->persist($script_admin);
+            //flush cache 
+            $entityManager->flush();
+            //redirect
+            return $this->redirectToRoute('scripts');
+        }
+
+        return $this->render('pages/script_admin.html.twig', array('form' => $form->createView()));
+
+        $admin = $this->getDoctrine()->getRepository(Script::class)->findAll();
+    }
+
+
+
+    /**
+     * @Route("/new_script_1", name="create_script_1")
+     */
+    public function createScript1(): Response
+    {
+        // you can fetch the EntityManager via $this->getDoctrine()
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $newScript1 = new Script();
+        $newScript1->setLinesPerActor(5000);
+        $newScript1->setWordsPerActor('100');
+        $newScript1->setMentionsPerActor('15');
+        $newScript1->setMoviesPerYear(3);
+        $newScript1->setPercentOfFails(5);
+
+        // tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $entityManager->persist($newScript1);
+
+        // actually executes the queries (i.e. the INSERT query)
+        $entityManager->flush();
+
+        return new Response('Saved new script with id '. $newScript1->getId());
+    }
+
+
+
+
+        /** 
+        * @Route("/lines_per_actor", name="script_info")
         * @Method({"GET", "POST"})  
         */
 
+        //trying to write functions to calculate how many lines per actor 
+        public function linesPerActor($body) {
+            $lines = preg_split("/^/$actor_name.*$/", "$body");
+            $lines_per_actor = count($lines);
+            return $lines_per_actor;
+            //this might process the text multiple times :/ need to be more specific 
+            //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
+        }
+
+        //words per actor 
+        public function wordsPerActor($body) {
+           
+        }
+
+        //mentions per actor #todo
+        public function mentionsPerActor($body) {
+            //using regex something like /^/$actor_name.*$/
+         }
+
+        //meovies per year
+        public function moviesPerYear() {
+            //something #todo
+         }
+
+        //fails per year
+        public function failsPerYear() {
+            //something #todo
+         }
+
+
+
+
         
-    }
+}

@@ -1,4 +1,4 @@
-if (movies) {
+if (movie) {
     articles.addEventListener('click', e => {
         if (e.target.className === 'btn btn-danger delete-article') {
             if (confirm('Are you sure?')) {

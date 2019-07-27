@@ -13,7 +13,7 @@
         <tbody>
             {% for ScriptTitle in ScriptTitles %}
                 <tr>
-                    <td> {{ ScriptTitle.Title }}</td>
+                    <td> {{ ScriptTitle.id }}</td>
                     <td>
                         <a href="/scripts/{{ ScriptTitle.id }}" class="btn btn-dark">Info</a>
                         <a href="/scripts/edit/{{ ScriptTitle.id }}" class="btn btn-light">Edit</a>

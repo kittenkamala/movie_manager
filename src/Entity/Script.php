@@ -23,30 +23,30 @@ class Script
 
 
     /** 
-    *@ORM\Column(type="text")
+    *@ORM\Column(type="integer", name="lines_per_actor", nullable=true, options={"unsigned":true, "default":0})
     */
     private $lines_per_actor;
 
 
     /** 
-    *@ORM\Column(type="text")
+    *@ORM\Column(type="integer", name="words_per_actor", nullable=true, options={"unsigned":true, "default":0})
     */
     private $words_per_actor;
 
 
     /** 
-    *@ORM\Column(type="text")
+    *@ORM\Column(type="integer", name="mentions_per_actor", nullable=true, options={"unsigned":true, "default":0})
     */
     private $mentions_per_actor;
 
 
     /** 
-    *@ORM\Column(type="text")
+    *@ORM\Column(type="integer", name="movies_per_year", nullable=true, options={"unsigned":true, "default":0})
     */
     private $movies_per_year;
 
-      /** 
-    *@ORM\Column(type="text")
+    /** 
+    *@ORM\Column(type="integer", name="percent_of_fails", nullable=true, options={"unsigned":true, "default":0})
     */
     private $percent_of_fails;
 
@@ -58,29 +58,24 @@ class Script
         return $this->id;
     }
 
-    //get lines per actor #todo, build functionality for this
+    //get lines per actor 
     public function getLinesPerActor() {
-        //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
-        return $this->$lines_per_actor;
+        return $this->lines_per_actor;
     }
    
-    //set lines per actor 1 #todo
-    public function setLinesPerActor() {
-        $lines_per_actor = 0;
-        return $lines_per_actor;
-      #  return $this->lines_per_actor = $lines_per_actor;
+    //set lines per actor 
+    public function setLinesPerActor($lines_per_actor) {
+        return $this->lines_per_actor = $lines_per_actor;
     }
 
 
     //get words per actor  #todo build functionality for this 
-    public function getWordPerActor() {
-        //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
-        return $this->$words_per_actor;
+    public function getWordsPerActor() {
+        return $this->words_per_actor;
     }
    
     //set words per actor 
-    public function setWordsPerActor() {
-        $words_per_actor = 0;
+    public function setWordsPerActor($words_per_actor) {
         return $this->words_per_actor = $words_per_actor;
     }
 
@@ -88,36 +83,33 @@ class Script
     //get mentions per actor 
     public function getMentionsPerActor() {
         //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
-        return $this->$mentions_per_actor;
+        return $this->mentions_per_actor;
     }
    
     //set mentions per actor 
-    public function setMentionsPerActor() {
-        $mentions_per_actor = 0;
+    public function setMentionsPerActor($mentions_per_actor) {
         return $this->mentions_per_actor = $mentions_per_actor;
     }
 
     
     //get MoviesPerYear
     public function getMoviesPerYear() {
-        return $this->$movies_per_year;
+        return $this->movies_per_year;
     }
 
     //set MoviesPerYear
-    public function setMoviesPerYear() {
-        $movies_per_year = 0;
+    public function setMoviesPerYear($movies_per_year) {
         return $this->movies_per_year = $movies_per_year;
     }
 
 
     //get percent of fails 
     public function getPercentOfFails() {
-        return $this->$percent_of_fails;
+        return $this->percent_of_fails;
     }
 
     //set percent of fails
-    public function setPercentOfFails() {
-        $percent_of_fails = 0;
+    public function setPercentOfFails($percent_of_fails) {
         return $this->percent_of_fails = $percent_of_fails;
     }
 }

@@ -7,28 +7,24 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th> Title</th>
-                <th>Production Company</th>
-                <th> Actor 1 </th>
-                <th> Actor 2 </>
-                <th> Actor Pay</th>
-                <th> Actor Revenue </th>
-                <th> Company Revenue </th>
-                <th> Losses </th>
+                <th> ID </th>
+                <th>Lines Per Actor</th>
+                <th> Words Per Actor </th>
+                <th> Mentions Per Actor </th>
+                <th> Movies Per Year</th>
+                <th> Percent Of Fails </th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>{{ScriptTitles.title}}</td>
-                <td>{{ScriptTitles.company}}</td>
-                <td>{{ScriptTitles.Actor}}</td>
-                <td>{{ScriptTitles.Actor1}}</td>
-                <td>{{ScriptTitles.ActorPay}}</td>
-                <td>{{ScriptTitles.ActorRevenue}}</td>
-                <td>{{ScriptTitles.CompanyRevenue}}</td>
-                <td>{{ScriptTitles.losses}}</td>
+                <td>{{ScriptTitles.id}}</td>
+                <td>{{ScriptTitles.linesPerActor}}</td>
+                <td>{{ScriptTitles.wordsPerActor}}</td>
+                <td>{{ScriptTitles.mentionsPerActor}}</td>
+                <td>{{ScriptTitles.moviesPerYear}}</td>
+                <td>{{ScriptTitles.percentOfFails}}</td>
             </tr>
     </table>
-    <a href="/">Go Back</a>
+    <a href="/scripts/">Go Back</a>
 
 {% endblock %} 
