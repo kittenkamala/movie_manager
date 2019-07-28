@@ -1,6 +1,7 @@
+<?php
 namespace App\Service;
 
-class Scriptmetrics {
+class ScriptMetrics {
 
     public function test()
     {

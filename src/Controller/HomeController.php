@@ -13,6 +13,7 @@
     use Symfony\Component\Form\Extension\Core\Type\SubmitType;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Routing\Annotation;
+    use App\Service\ScriptMetrics;
 
 
     class HomeController extends AbstractFOSRestController {
