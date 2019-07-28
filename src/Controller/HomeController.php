@@ -24,11 +24,6 @@
          */
 
         public function index() {
-         #   return new Response('hello'); //#todo delete this when done with testing
-         #   return $this->json([
-          #      'message' => 'Welcome!',
-           #     'path' => 'src/Controller/HomeController.php,'
-          #  ]);
             $MovieTitles = $this->getDoctrine()->getRepository(Movie::class)->findAll();
             $ScriptTitles = $this->getDoctrine()->getRepository(Script::class)->findAll();
             return $this->render('pages/index.html.twig', array('MovieTitles' => $MovieTitles, 'ScriptTitles' => $ScriptTitles ));
@@ -54,36 +49,35 @@
             return $this->render('pages/movies_home.html.twig', array('MovieTitles' => $MovieTitles ));
         }
 
+
         /** 
         * @Route("/scripts/", name="scripts")
         * @Method({"GET", "POST"})  
         */
-
-        //page with table, list of scripts w buttons 
         public function scripts() {
             $ScriptTitles = $this->getDoctrine()->getRepository(Script::class)->findAll();
             return $this->render('pages/scripts_home.html.twig', array('ScriptTitles' => $ScriptTitles ));
         }
 
-        /** 
-        * @Route("/movies/{id}", name="info")
-        * @Method({"GET", "POST"})  
-        */
-
-        // page with details about an individual movie
-        public function movie($id) {
-            $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
-            return $this->render('pages/movies.html.twig', array('MovieTitles' => $movie));
-        }
 
         /** 
-        * @Route("/scripts/{id}", name="info")
+        * @Route("/script/{id}", name="script_info")
         * @Method({"GET", "POST"})  
         */
-
         public function script($id) {
             $script = $this->getDoctrine()->getRepository(Script::class)->find($id);
             return $this->render('pages/script.html.twig', array('ScriptTitles' => $script));
+        }
+
+
+
+        /** 
+        * @Route("/movies/{id}", name="movie_info")
+        * @Method({"GET", "POST"})  
+        */
+        public function movie($id) {
+            $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
+            return $this->render('pages/movies.html.twig', array('MovieTitles' => $movie));
         }
 
 
@@ -350,10 +344,10 @@
         $entityManager = $this->getDoctrine()->getManager();
 
         $newScript1 = new Script();
-        $newScript1->setLinesPerActor(5000);
-        $newScript1->setWordsPerActor('100');
-        $newScript1->setMentionsPerActor('15');
-        $newScript1->setMoviesPerYear(3);
+        $newScript1->setLinesPerActor(0);
+        $newScript1->setWordsPerActor('0');
+        $newScript1->setMentionsPerActor('0');
+        $newScript1->setMoviesPerYear(10);
         $newScript1->setPercentOfFails(5);
 
         // tell Doctrine you want to (eventually) save the Product (no queries yet)
@@ -364,45 +358,6 @@
 
         return new Response('Saved new script with id '. $newScript1->getId());
     }
-
-
-
-
-        /** 
-        * @Route("/lines_per_actor", name="script_info")
-        * @Method({"GET", "POST"})  
-        */
-
-        //trying to write functions to calculate how many lines per actor 
-        public function linesPerActor($body) {
-            $lines = preg_split("/^/$actor_name.*$/", "$body");
-            $lines_per_actor = count($lines);
-            return $lines_per_actor;
-            //this might process the text multiple times :/ need to be more specific 
-            //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
-        }
-
-        //words per actor 
-        public function wordsPerActor($body) {
-           
-        }
-
-        //mentions per actor #todo
-        public function mentionsPerActor($body) {
-            //using regex something like /^/$actor_name.*$/
-         }
-
-        //meovies per year
-        public function moviesPerYear() {
-            //something #todo
-         }
-
-        //fails per year
-        public function failsPerYear() {
-            //something #todo
-         }
-
-
 
 
         
