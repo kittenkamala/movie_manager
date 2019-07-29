@@ -259,27 +259,6 @@
         }
 
 
-    /**
-    *@Route("/calculate", name="calculate")
-    *@Method({"GET", "POST"}) 
-    */
-    public function calculate(): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $newScript = new Script();
-        $newScript->setLinesPerActor('5');
-        $newScript->setWordsPerActor('5');
-        $newScript->setMentionssPerActor('5');
-        $newScript->setMoviesPerYear('10');
-        $newScript->setPercentOfFails('5');
-        // caches data to be saved to db
-        $entityManager->persist($newScript);
-        // saves cached data to db 
-        $entityManager->flush();
-    
-
-    }
-
 
         /** 
          * @Route("/add_script/", name="script_admin")
@@ -306,34 +285,6 @@
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
- /*            ->add('linesPerActor', 
-                TextareaType::class, 
-                array(
-                    'attr' => array(
-                      'class' => 'form-control')))
-             ->add('wordsPerActor', 
-                TextareaType::class, 
-                array(
-                    'attr' => array(
-                        'class' => 'form-control')))                           
-            ->add('mentionsPerActor', 
-                TextareaType::class, 
-                array(
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control')))
-            ->add('moviesPerYear', 
-                TextareaType::class,
-                array(
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control')))                       
-            ->add('percentOfFails', 
-                TextareaType::class, 
-                array(
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'form-control'))) */
             ->add('save', 
                 SubmitType::class, 
                 array(
@@ -347,14 +298,22 @@
         //send data from form to database
         if($form->isSubmitted() && $form->isValid()){
             $script_admin = $form->getData();
-            $script_admin->setLinesPerActor('5');
-            $script_admin->setWordsPerActor('5');
-            $script_admin->setMentionsPerActor('5');
+            //create entity manager
+            $entityManager = $this->getDoctrine()->getManager();
+            //get the body and actor_name values from the cached script data
+            $body = $script_admin->getBody();
+            $actor_name = $script_admin->getActorName();
+            //counte # of lines ..... #todo fix this
+            $lines = preg_split("/^\/$actor_name.*$/", "$body");
+            $lines_per_actor = count($lines);
+            $script_admin->setLinesPerActor($lines_per_actor);
+            #count how many words in script #todo elaborate on this
+            $words_per_actor = str_word_count($body);
+            $script_admin->setWordsPerActor($words_per_actor );
+            $script_admin->setMentionsPerActor('5'); #todo
             $script_admin->setMoviesPerYear('10');
             $script_admin->setPercentOfFails('5');
 
-            //create entity manager
-            $entityManager = $this->getDoctrine()->getManager();
             
             //persist the data
             $entityManager->persist($script_admin);
