@@ -304,13 +304,15 @@
             $body = $script_admin->getBody();
             $actor_name = $script_admin->getActorName();
             //counte # of lines ..... #todo fix this
-            $lines = preg_split("/^\/$actor_name.*$/", "$body");
+            $lines = [];
+            $lines = preg_split("/^\/$actor_name.*$/", "$body", PREG_SPLIT_OFFSET_CAPTURE);
             $lines_per_actor = count($lines);
             $script_admin->setLinesPerActor($lines_per_actor);
             #count how many words in script #todo elaborate on this
             $words_per_actor = str_word_count($body);
             $script_admin->setWordsPerActor($words_per_actor );
-            $script_admin->setMentionsPerActor('5'); #todo
+            $mentions_per_actor = substr_count($body, $actor_name);
+            $script_admin->setMentionsPerActor($mentions_per_actor); 
             $script_admin->setMoviesPerYear('10');
             $script_admin->setPercentOfFails('5');
 
