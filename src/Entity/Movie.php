@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Service\ScriptMetrics;
+use App\Service;
 
 
 /**
@@ -14,7 +15,7 @@ class Movie
     /** 
     *@ORM\Column(type="text")
     */
-   /* private $scriptMetrics;
+ /*   private $scriptMetrics;
 
     public function __construct(ScriptMetrics $scriptMetrics)
     {

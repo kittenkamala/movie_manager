@@ -13,12 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 class Script
 {
 
-    private $scriptMetrics;
+    /*
+    private $ScriptMetrics;
 
-    public function __construct(ScriptMetrics $scriptMetrics)
+    public function __construct(ScriptMetrics $ScriptMetrics)
     {
-        $this->scriptMetrics = $scriptMetrics;
-    }
+        $this->ScriptMetrics = $ScriptMetrics;
+    }  */
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -66,6 +68,21 @@ class Script
      * @ORM\OneToOne(targetEntity="App\Entity\Movie", inversedBy="script_id", cascade={"persist", "remove"})
      */
     private $script_id;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $body;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $actor_name;
 
 
     //getters and setters
@@ -130,6 +147,7 @@ class Script
         return $this->percent_of_fails = $percent_of_fails;
     }
 
+    //getters and setters for relationship to movies table
     public function getScriptId(): ?Movie
     {
         return $this->script_id;
@@ -138,6 +156,44 @@ class Script
     public function setScriptId(?Movie $script_id): self
     {
         $this->script_id = $script_id;
+
+        return $this;
+    }
+
+    //get and set script title
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    //get and set script body 
+    public function getBody(): ?string
+    {
+        return $this->body;
+    }
+
+    public function setBody(?string $body): self
+    {
+        $this->body = $body;
+
+        return $this;
+    }
+
+    public function getActorName(): ?string
+    {
+        return $this->actor_name;
+    }
+
+    public function setActorName(?string $actor_name): self
+    {
+        $this->actor_name = $actor_name;
 
         return $this;
     }

@@ -258,6 +258,29 @@
             $admin = $this->getDoctrine()->getRepository(Movie::class)->findAll();
         }
 
+
+    /**
+    *@Route("/calculate", name="calculate")
+    *@Method({"GET", "POST"}) 
+    */
+    public function calculate(): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $newScript = new Script();
+        $newScript->setLinesPerActor('5');
+        $newScript->setWordsPerActor('5');
+        $newScript->setMentionssPerActor('5');
+        $newScript->setMoviesPerYear('10');
+        $newScript->setPercentOfFails('5');
+        // caches data to be saved to db
+        $entityManager->persist($newScript);
+        // saves cached data to db 
+        $entityManager->flush();
+    
+
+    }
+
+
         /** 
          * @Route("/add_script/", name="script_admin")
          * @Method({"GET", "POST"})  
@@ -268,7 +291,22 @@
         $script_admin = new Script();
 
         $form = $this->createFormBuilder($script_admin)
-             ->add('linesPerActor', 
+             ->add('title', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+             ->add('body', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+             ->add('actor_name', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+ /*            ->add('linesPerActor', 
                 TextareaType::class, 
                 array(
                     'attr' => array(
@@ -295,7 +333,7 @@
                 array(
                     'required' => false,
                     'attr' => array(
-                        'class' => 'form-control')))
+                        'class' => 'form-control'))) */
             ->add('save', 
                 SubmitType::class, 
                 array(
@@ -309,11 +347,22 @@
         //send data from form to database
         if($form->isSubmitted() && $form->isValid()){
             $script_admin = $form->getData();
+            $script_admin->setLinesPerActor('5');
+            $script_admin->setWordsPerActor('5');
+            $script_admin->setMentionsPerActor('5');
+            $script_admin->setMoviesPerYear('10');
+            $script_admin->setPercentOfFails('5');
 
             //create entity manager
             $entityManager = $this->getDoctrine()->getManager();
+            
             //persist the data
             $entityManager->persist($script_admin);
+            //flush cache 
+            //$entityManager->flush();
+            //add default metrics 
+            // $newScript = new Script;
+            //$entityManager->persist($newScript);
             //flush cache 
             $entityManager->flush();
             //redirect
@@ -324,7 +373,6 @@
 
         $admin = $this->getDoctrine()->getRepository(Script::class)->findAll();
     }
-
 
 
     /**
@@ -354,17 +402,19 @@
     /**
      * @Route("/script_metrics/{id}", name="metrics")
      */
-
+/*
     public function getScriptMetrics(Request $request, $id)
     {
-      #  $movie = new Movie($this->getDoctrine()->getRepository(ScriptMetrics::class));
-        $movie = new Movie($this->getDoctrine()->getRepository(Movie::class)->find($id));
+       # $script = new Script($this->getDoctrine()->getRepository(ScriptMetrics::class));
+        $script= new Script($this->getDoctrine()->getRepository(ScriptMetrics::class));
+        $body = $this->getDoctrine()->getRepository(Script::class)->find($body);
+       # $movie = new Movie($this->getDoctrine()->getRepository(Movie::class)->find($id));
       #  $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
  #       $scriptMetrics = $this->get('app.ScriptMetrics');
-        $scriptMetrics = $this->getDoctrine()->getRepository(Script::class);
-        $lines_per_actor = $scriptMetrics->linesPerActor($movie);
+       # $scriptMetrics = $this->getDoctrine()->getRepository(ScriptMetrics::class);
+        $lines_per_actor = $script->linesPerActor($body);
         return $lines_per_actor;
-    } 
+    }  */
 
         
 }
