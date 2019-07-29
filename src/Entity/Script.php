@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Entity;
+use App\Entity;
+use Symfony\Component\Routing\Annotation;
+use App\Service\ScriptMetrics;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,10 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Script
 {
+
+    private $scriptMetrics;
+
+    public function __construct(ScriptMetrics $scriptMetrics)
+    {
+        $this->scriptMetrics = $scriptMetrics;
+    }
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="Movie")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     private $id;
 
@@ -49,6 +61,11 @@ class Script
     *@ORM\Column(type="integer", name="percent_of_fails", nullable=true, options={"unsigned":true, "default":0})
     */
     private $percent_of_fails;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Movie", inversedBy="script_id", cascade={"persist", "remove"})
+     */
+    private $script_id;
 
 
     //getters and setters
@@ -111,5 +128,17 @@ class Script
     //set percent of fails
     public function setPercentOfFails($percent_of_fails) {
         return $this->percent_of_fails = $percent_of_fails;
+    }
+
+    public function getScriptId(): ?Movie
+    {
+        return $this->script_id;
+    }
+
+    public function setScriptId(?Movie $script_id): self
+    {
+        $this->script_id = $script_id;
+
+        return $this;
     }
 }

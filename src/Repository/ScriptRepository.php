@@ -19,6 +19,19 @@ class ScriptRepository extends ServiceEntityRepository
         parent::__construct($registry, Script::class);
     }
 
+    public function findScriptByIdJoinedToMovieId($scriptId)
+    {
+    return $this->createQueryBuilder('script')
+        // script.id refers to the "id" property on script
+        ->innerJoin('script.id', 'id')
+        // selects all the id data to avoid the query
+        ->addSelect('id')
+        ->andWhere('movie.id = :id')
+        ->setParameter('id', $scriptId)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Script[] Returns an array of Script objects
     //  */

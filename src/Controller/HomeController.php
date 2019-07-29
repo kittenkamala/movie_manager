@@ -1,8 +1,10 @@
 <?php 
     namespace App\Controller;
+
     use App\Entity\Script;
     use App\Entity\Movie;
     use App\Controller\HomeController;
+    use App\Service\ScriptMetrics;
     use FOS\RestBundle\Controller\AbstractFOSRestController;
     use Symfony\Component\HttpFoundation\Response;
     use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +15,8 @@
     use Symfony\Component\Form\Extension\Core\Type\SubmitType;
     use Symfony\Component\Routing\Annotation\Route;
     use Symfony\Component\Routing\Annotation;
-    use App\Service\ScriptMetrics;
+    use App\Service;
+
 
 
     class HomeController extends AbstractFOSRestController {
@@ -29,16 +32,6 @@
             $ScriptTitles = $this->getDoctrine()->getRepository(Script::class)->findAll();
             return $this->render('pages/index.html.twig', array('MovieTitles' => $MovieTitles, 'ScriptTitles' => $ScriptTitles ));
         }   
-
-        /**
-         * @Route("/update", name="update")
-         * @Method({"GET", "POST"})
-         * 
-         */
-        public function update() {
-            return 'hello';
-
-        }
 
         /**
          * @Route("/movies", name="movies")
@@ -187,10 +180,9 @@
         * @Method({"GET", "POST"})  
         */
 
-        //add a movie to the list on /movies
+        //add a movie to the list on /movies and calculate script metrics
         public function add(Request $request) {
             $movie_admin = new Movie();
-
             $form = $this->createFormBuilder($movie_admin)
             ->add('title', 
                     TextType::class, 
@@ -247,7 +239,6 @@
              ->getForm();
             //submit form
             $form->handleRequest($request);
-
             //send data from form to database
             if($form->isSubmitted() && $form->isValid()){
                 $movie_admin = $form->getData();
@@ -351,15 +342,29 @@
         $newScript1->setMoviesPerYear(10);
         $newScript1->setPercentOfFails(5);
 
-        // tell Doctrine you want to (eventually) save the Product (no queries yet)
+        // tell Doctrine to save the script data for use in future (but no db queries yet)
         $entityManager->persist($newScript1);
 
-        // actually executes the queries (i.e. the INSERT query)
+        // saves data, executes INSERT query 
         $entityManager->flush();
 
-        return new Response('Saved new script with id '. $newScript1->getId());
     }
 
+
+    /**
+     * @Route("/script_metrics/{id}", name="metrics")
+     */
+
+    public function getScriptMetrics(Request $request, $id)
+    {
+      #  $movie = new Movie($this->getDoctrine()->getRepository(ScriptMetrics::class));
+        $movie = new Movie($this->getDoctrine()->getRepository(Movie::class)->find($id));
+      #  $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
+ #       $scriptMetrics = $this->get('app.ScriptMetrics');
+        $scriptMetrics = $this->getDoctrine()->getRepository(Script::class);
+        $lines_per_actor = $scriptMetrics->linesPerActor($movie);
+        return $lines_per_actor;
+    } 
 
         
 }

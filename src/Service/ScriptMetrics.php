@@ -3,25 +3,36 @@ namespace App\Service;
 
 class ScriptMetrics {
 
-    public function test()
-    {
-        $messages = [
-            'one',
-            'two',
-            'three',
-        ];
 
-        $index = array_rand($messages);
+   # private $scriptMetrics;
 
-        return $messages[$index];
-    }
+    #public function __construct(ScriptMetrics $scriptMetrics)
+    #{
+     #   $this->scriptMetrics = $scriptMetrics;
+    #}
 
-    public function linesPerActor($body) {
+    private $lines_per_actor = 0;
+    private $words_per_actor = 0;
+    private $mentions_per_actor = 0;
+    private $movies_per_year = 10;
+    private $percent_of_fails = 5;
+
+    public function linesPerActor($id) {
+        $body = $this->getDoctrine()->getRepository(Movie::class)->find($body);
         $lines = preg_split("/^/$actor_name.*$/", "$body");
         $lines_per_actor = count($lines);
-        return $lines_per_actor;
+        $newScript = new Script();
+        $newScript->setLinesPerActor($lines_per_actor);
+        // tell Doctrine to save lines per actor data for future use (but no db queries yet)
+        //$entityManager->persist($newScript);
+        // saves data, executes INSERT query 
+        if (!$session->has('lines_per_actor')) {
+            $em->persist($newScript);
+            $em->flush();
+            $session->set('lines_per_actor',$newScript);
+        }
+        $entityManager->flush();
         //this might process the text multiple times :/ need to be more specific 
-        //this is where your regex should go for # of lines, something like /^/$actor_name.*$/
     }
 
     //words per actor 

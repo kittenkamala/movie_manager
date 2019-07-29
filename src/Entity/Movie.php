@@ -3,12 +3,24 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Service\ScriptMetrics;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  */
 class Movie
 {
+    /** 
+    *@ORM\Column(type="text")
+    */
+   /* private $scriptMetrics;
+
+    public function __construct(ScriptMetrics $scriptMetrics)
+    {
+        $this->scriptMetrics = $scriptMetrics;
+    } */
+    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -55,6 +67,11 @@ class Movie
     *@ORM\Column(type="text")
     */
     private $losses;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Script", mappedBy="script_id", cascade={"persist", "remove"})
+     */
+    private $script_id;
 
 
 
@@ -141,6 +158,24 @@ class Movie
     //set losses
     public function setLosses($losses) {
         $this->losses = $losses;
+    }
+
+    public function getScript(): ?Script
+    {
+        return $this->script_id;
+    }
+
+    public function setScript(?Script $script): self
+    {
+        $this->script_id = $script_id;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newScript_id = $script_id === null ? null : $this;
+        if ($newScript_id !== $script->getScriptId()) {
+            $script_id->setScriptId($newScript_id);
+        }
+
+        return $this;
     }
     
 }

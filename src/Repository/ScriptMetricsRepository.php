@@ -2,26 +2,29 @@
 
 namespace App\Repository;
 
+use App\Entity\Script;
 use App\Entity\Movie;
+use App\Controller;
+use App\Service;
+use App\Service\ScriptMetrics;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use App\Service;
 
 /**
- * @method Movie|null find($id, $lockMode = null, $lockVersion = null)
- * @method Movie|null findOneBy(array $criteria, array $orderBy = null)
- * @method Movie[]    findAll()
- * @method Movie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ScriptMetrics|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ScriptMetrics|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ScriptMetrics[]    findAll()
+ * @method ScriptMetrics[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MovieRepository extends ServiceEntityRepository
+class ScriptMetricsRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Movie::class);
+        parent::__construct($registry, ScriptMetrics::class);
     }
 
     // /**
-    //  * @return Movie[] Returns an array of Movie objects
+    //  * @return ScriptMetrics[] Returns an array of ScriptMetrics objects
     //  */
     /*
     public function findByExampleField($value)
@@ -38,7 +41,7 @@ class MovieRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Movie
+    public function findOneBySomeField($value): ?ScriptMetrics
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.exampleField = :val')
