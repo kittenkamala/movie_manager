@@ -18,6 +18,7 @@
                     <td>
                         <a href="/script/{{ ScriptTitle.id }}" class="btn btn-dark">Info</a>
                         <a href="/script/edit/{{ ScriptTitle.id }}" class="btn btn-light">Edit</a>
+                        <a href="/scripts/delete/{{ ScriptTitle.id }}" id="delete" class="btn btn-danger delete-article" data-id="{{ScriptTitle.id}}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

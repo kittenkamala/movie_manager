@@ -270,7 +270,7 @@
 
             return $this->render('pages/edit.html.twig', array('form' => $form->createView()));
 
-            $movie = $this->getDoctrine()->getRepository(Script::class)->findAll();
+            $script = $this->getDoctrine()->getRepository(Script::class)->findAll();
 
         }   
 
@@ -298,22 +298,25 @@
 
 
         /**
-         * @Route("/movies/delete/{id}", name="movie_delete")
+         * @Route("/scripts/delete/{id}", name="delete")
          * @Method({"DELETE"})
          */
-        public function delete(Request $request, $id) { #todo - reenable this
-            //find the movie by id
-            $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
+        public function delete(Request $request, $id) { 
+            //find script by id
+            $script = new Script();
+            $script = $this->getDoctrine()->getRepository(Script::class)->find($id);
 
                 //create entity manager
                 $entityManager = $this->getDoctrine()->getManager();
                 //delete the data
-                $entityManager->remove($movie);
+                $entityManager->remove($script);
                 //flush cache 
                 $entityManager->flush();
 
                 $response = new Response();
                 $response->send();
+                //redirect
+                return $this->redirectToRoute('scripts');
 
          }
 
