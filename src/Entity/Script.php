@@ -13,20 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Script
 {
 
-    /*
-    private $ScriptMetrics;
-
-    public function __construct(ScriptMetrics $ScriptMetrics)
-    {
-        $this->ScriptMetrics = $ScriptMetrics;
-    }  */
-    
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ORM\OneToOne(targetEntity="Movie")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     private $id;
 
@@ -63,11 +53,6 @@ class Script
     *@ORM\Column(type="integer", name="percent_of_fails", nullable=true, options={"unsigned":true, "default":0})
     */
     private $percent_of_fails;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Movie", inversedBy="script_id", cascade={"persist", "remove"})
-     */
-    private $script_id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -161,7 +146,6 @@ class Script
         return $this->movies_per_year = $movies_per_year;
     }
 
-
     //get percent of fails 
     public function getPercentOfFails() {
         return $this->percent_of_fails;
@@ -170,19 +154,6 @@ class Script
     //set percent of fails
     public function setPercentOfFails($percent_of_fails) {
         return $this->percent_of_fails = $percent_of_fails;
-    }
-
-    //getters and setters for relationship to movies table
-    public function getScriptId(): ?Movie
-    {
-        return $this->script_id;
-    }
-
-    public function setScriptId(?Movie $script_id): self
-    {
-        $this->script_id = $script_id;
-
-        return $this;
     }
 
     //get and set script title
