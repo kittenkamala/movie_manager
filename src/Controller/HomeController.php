@@ -79,7 +79,7 @@
          * @Route("/movies/delete/{id}", name="movie_delete")
          * @Method({"DELETE"})
          */
-        public function delete(Request $request, $id) {
+        public function delete(Request $request, $id) { #todo - reenable this
             //find the movie by id
             $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
 
@@ -176,11 +176,11 @@
 
 
          /** 
-        * @Route("/add/", name="admin")
+        * @Route("/add_movie/", name="admin")
         * @Method({"GET", "POST"})  
         */
 
-        //add a movie to the list on /movies and calculate script metrics
+        //add a movie to the list on /movies 
         public function add(Request $request) {
             $movie_admin = new Movie();
             $form = $this->createFormBuilder($movie_admin)
@@ -261,7 +261,7 @@
 
 
         /** 
-         * @Route("/add_script/", name="script_admin")
+         * @Route("/add/", name="script_admin")
          * @Method({"GET", "POST"})  
          */
     
@@ -270,26 +270,49 @@
         $script_admin = new Script();
 
         $form = $this->createFormBuilder($script_admin)
-             ->add('title', 
+            ->add('title', 
                 TextareaType::class, 
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
-             ->add('body', 
+            ->add('body', 
                 TextareaType::class, 
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
-             ->add('actor_name', 
+            ->add('company', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                        'class' => 'form-control')))
+            ->add('actor_name', 
                 TextareaType::class, 
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
-             ->add('company', 
+            ->add('actor_pay', 
                 TextareaType::class, 
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
+            ->add('actor_revenue', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
+            ->add('company_revenue', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
+            ->add('losses', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
             ->add('save', 
                 SubmitType::class, 
                 array(
@@ -321,7 +344,6 @@
             $mentions_per_actor = substr_count($body, $actor_name);
             $script_admin->setMentionsPerActor($mentions_per_actor); 
             switch ($company) {
-                //source: https://www.boxofficemojo.com/studio/?view=parent&view2=yearly&yr=2018&p=.htm
                 case 'Netflix':
                     $script_admin->setMoviesPerYear('38');
                     $script_admin->setPercentOfFails('0');
@@ -401,21 +423,83 @@
 
 
     /**
-     * @Route("/script_metrics/{id}", name="metrics")
-     */
-/*
-    public function getScriptMetrics(Request $request, $id)
-    {
-       # $script = new Script($this->getDoctrine()->getRepository(ScriptMetrics::class));
-        $script= new Script($this->getDoctrine()->getRepository(ScriptMetrics::class));
-        $body = $this->getDoctrine()->getRepository(Script::class)->find($body);
-       # $movie = new Movie($this->getDoctrine()->getRepository(Movie::class)->find($id));
-      #  $movie = $this->getDoctrine()->getRepository(Movie::class)->find($id);
- #       $scriptMetrics = $this->get('app.ScriptMetrics');
-       # $scriptMetrics = $this->getDoctrine()->getRepository(ScriptMetrics::class);
-        $lines_per_actor = $script->linesPerActor($body);
-        return $lines_per_actor;
-    }  */
+    * @Route("/script/edit/{id}", name="script_edit")
+    * @Method({"GET", "POST"})
+    */
 
-        
+    //page with form from when click edit on /scripts_home
+    public function script_edit(Request $request, $id) {
+        $script = new Script();
+        $script = $this->getDoctrine()->getRepository(Script::class)->find($id);
+        $form = $this->createFormBuilder($script)
+            ->add('title', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+            ->add('body', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+            ->add('company', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                        'class' => 'form-control')))
+            ->add('actor_name', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+            ->add('actor_pay', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
+            ->add('actor_revenue', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
+            ->add('company_revenue', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
+            ->add('losses', 
+                    TextareaType::class, 
+                    array(
+                        'required' => false,
+                        'attr' => array(
+                            'class' => 'form-control')))
+            ->add('save', 
+                SubmitType::class, 
+                array(
+                    'label' => 'Save', 
+                    'attr' => array(
+                    'class' => 'btn btn-primary mt-3')))         
+            ->getForm();
+            //submit form
+            $form->handleRequest($request);
+
+            //send data from form to database
+            if($form->isSubmitted() && $form->isValid()){
+
+            //create entity manager
+            $entityManager = $this->getDoctrine()->getManager();
+            //flush cache 
+            $entityManager->flush();
+            //redirect
+            return $this->redirectToRoute('scripts');
+            }
+
+            return $this->render('pages/edit.html.twig', array('form' => $form->createView()));
+
+            $movie = $this->getDoctrine()->getRepository(Script::class)->findAll();
+
+        }   
 }
+    

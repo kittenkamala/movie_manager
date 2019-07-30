@@ -89,6 +89,26 @@ class Script
      */
     private $company;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $actor_pay;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $actor_revenue;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $company_revenue;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $losses;
+
 
     //getters and setters
 
@@ -211,6 +231,54 @@ class Script
     public function setCompany(?string $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getActorPay(): ?int
+    {
+        return $this->actor_pay;
+    }
+
+    public function setActorPay(?int $actor_pay): self
+    {
+        $this->actor_pay = $actor_pay;
+
+        return $this;
+    }
+
+    public function getActorRevenue(): ?int
+    {
+        return $this->actor_revenue;
+    }
+
+    public function setActorRevenue(?int $actor_revenue): self
+    {
+        $this->actor_revenue = $actor_revenue;
+
+        return $this;
+    }
+
+    public function getCompanyRevenue(): ?int
+    {
+        return $this->company_revenue;
+    }
+
+    public function setCompanyRevenue(?int $company_revenue): self
+    {
+        $this->company_revenue = $company_revenue;
+
+        return $this;
+    }
+
+    public function getLosses(): ?int
+    {
+        return $this->losses;
+    }
+
+    public function setLosses(?int $losses): self
+    {
+        $this->losses = $losses;
 
         return $this;
     }
