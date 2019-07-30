@@ -303,14 +303,15 @@
             //get the body and actor_name values from the cached script data
             $body = $script_admin->getBody();
             $actor_name = $script_admin->getActorName();
-            //counte # of lines ..... #todo fix this
-            $lines = [];
-            $lines = preg_split("/^\/$actor_name.*$/", "$body", PREG_SPLIT_OFFSET_CAPTURE);
+            //count # of lines 
+            $lines = preg_split("/" . $actor_name . "/", $body);
             $lines_per_actor = count($lines);
+            //cache that
             $script_admin->setLinesPerActor($lines_per_actor);
             #count how many words in script #todo elaborate on this
             $words_per_actor = str_word_count($body);
-            $script_admin->setWordsPerActor($words_per_actor );
+            $script_admin->setWordsPerActor($words_per_actor);
+            #mentions in a script #todo elaborate
             $mentions_per_actor = substr_count($body, $actor_name);
             $script_admin->setMentionsPerActor($mentions_per_actor); 
             $script_admin->setMoviesPerYear('10');
