@@ -285,6 +285,11 @@
                 array(
                     'attr' => array(
                       'class' => 'form-control')))
+             ->add('company', 
+                TextareaType::class, 
+                array(
+                    'attr' => array(
+                      'class' => 'form-control')))
             ->add('save', 
                 SubmitType::class, 
                 array(
@@ -300,9 +305,10 @@
             $script_admin = $form->getData();
             //create entity manager
             $entityManager = $this->getDoctrine()->getManager();
-            //get the body and actor_name values from the cached script data
+            //get values from the cached script data
             $body = $script_admin->getBody();
             $actor_name = $script_admin->getActorName();
+            $company = $script_admin->getCompany();
             //count # of lines 
             $lines = preg_split("/" . $actor_name . "/", $body);
             $lines_per_actor = count($lines);
@@ -314,20 +320,53 @@
             #mentions in a script #todo elaborate
             $mentions_per_actor = substr_count($body, $actor_name);
             $script_admin->setMentionsPerActor($mentions_per_actor); 
-            $script_admin->setMoviesPerYear('10');
-            $script_admin->setPercentOfFails('5');
-
-            
-            //persist the data
+            switch ($company) {
+                //source: https://www.boxofficemojo.com/studio/?view=parent&view2=yearly&yr=2018&p=.htm
+                case 'Netflix':
+                    $script_admin->setMoviesPerYear('38');
+                    $script_admin->setPercentOfFails('0');
+                    break;
+                case 'Disney':
+                    $script_admin->setMoviesPerYear('13');
+                    $script_admin->setPercentOfFails('3');
+                    break;
+                case 'Warner Bros':
+                    $script_admin->setMoviesPerYear('49');
+                    $script_admin->setPercentOfFails('6');
+                case 'NBC':
+                    $script_admin->setMoviesPerYear('36');
+                    $script_admin->setPercentOfFails('12');
+                    break;
+                case 'Sony':
+                    $script_admin->setMoviesPerYear('48');
+                    $script_admin->setPercentOfFails('7');
+                    break;
+                case 'MGM':
+                    $script_admin->setMoviesPerYear('3');
+                    $script_admin->setPercentOfFails('3');
+                    break;
+                case 'Lionsgate':
+                    $script_admin->setMoviesPerYear('20');
+                    $script_admin->setPercentOfFails('1');
+                    break;
+                case 'DreamWorks':
+                    $script_admin->setMoviesPerYear('1');
+                    $script_admin->setPercentOfFails('0');
+                    break;
+                case 'Paramount':
+                    $script_admin->setMoviesPerYear('12');
+                    $script_admin->setPercentOfFails('1');
+                    break;
+                default: 
+                    $script_admin->setMoviesPerYear(NULL);
+                    $script_admin->setPercentOfFails(NULL);
+            }
+     
+            //save new data in cache
             $entityManager->persist($script_admin);
-            //flush cache 
-            //$entityManager->flush();
-            //add default metrics 
-            // $newScript = new Script;
-            //$entityManager->persist($newScript);
-            //flush cache 
+            // insert data into db
             $entityManager->flush();
-            //redirect
+            //redirect page
             return $this->redirectToRoute('scripts');
         }
 

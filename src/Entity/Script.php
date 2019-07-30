@@ -84,6 +84,11 @@ class Script
      */
     private $actor_name;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $company;
+
 
     //getters and setters
 
@@ -194,6 +199,18 @@ class Script
     public function setActorName(?string $actor_name): self
     {
         $this->actor_name = $actor_name;
+
+        return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?string $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }
