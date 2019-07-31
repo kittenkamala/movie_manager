@@ -24,13 +24,33 @@ Step 4) You'll receive a URL as output, click or copy/paste the URL in your brow
 
 If you wish to use MAMP or another local IDE, you may edit the .env file to update database connection details. By default these are set to root:root port 3306. 
 
-Once up and Running .....
+Play with it! 
 
-To create a new set of script data automatically: 
-Navigate to /new_script_1 in your browser to auto-generate a new script with default values.
+To create a new default set of movie script data automatically: 
+
+Navigate to /new_script_1 in your browser to auto-generate a new script with default values. This will redirect you to the /scripts_home page when done. 
 
 To create a new movie: 
-Navigate to /add to add data for a new movie script. 
+Navigate to /add to add data for a new movie script. All fields required. 
+
+Fun things on /add: 
+-Enter a real production company name (such as "Sony") and Movie Manager will generate 'Movies Per Year' and 'Percent Of Fails' data specific to that production company (based on production info from 2018). The companies Movie Manager recognizes are:  
+
+'Netflix'
+'Disney'
+'Warner Bros'
+'NBC'
+'Sony'
+'MGM'
+'Lionsgate'
+'DreamWorks'
+ 'Paramount'
+
+-Paste part of a script text (or any text at all) into the 'body' field on /add, to find out:
+ How many words are in the pasted text
+ How many lines the text has
+ How many times an actor's name is mentioned.
+
 
 Built With:
 Symfony - Web Framework

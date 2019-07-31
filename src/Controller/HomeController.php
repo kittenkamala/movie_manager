@@ -92,19 +92,16 @@
                 ->add('actor_revenue', 
                         TextareaType::class, 
                         array(
-                            'required' => false,
                             'attr' => array(
                                 'class' => 'form-control')))
                 ->add('company_revenue', 
                         TextareaType::class, 
                         array(
-                            'required' => false,
                             'attr' => array(
                                 'class' => 'form-control')))
                 ->add('losses', 
                         TextareaType::class, 
                         array(
-                            'required' => false,
                             'attr' => array(
                                 'class' => 'form-control')))
                 ->add('save', 
@@ -274,29 +271,7 @@
 
         }   
 
-        /**
-        * @Route("/new_script_1", name="create_script_1")
-        */
-        public function createScript1(): Response #makes new script w default values
-        {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $newScript1 = new Script();
-            $newScript1->setLinesPerActor(0);
-            $newScript1->setWordsPerActor('0');
-            $newScript1->setMentionsPerActor('0');
-            $newScript1->setMoviesPerYear(10);
-            $newScript1->setPercentOfFails(5);
-
-            // tell Doctrine to save the script data for use in future (but no db queries yet)
-            $entityManager->persist($newScript1);
-
-            // saves data, executes INSERT query 
-            $entityManager->flush();
-
-    }
-
-
+ 
         /**
          * @Route("/scripts/delete/{id}", name="delete")
          * @Method({"DELETE"})
@@ -319,6 +294,31 @@
                 return $this->redirectToRoute('scripts');
 
          }
+
+       /**
+        * @Route("/new_script_1", name="create_script_1")
+        */
+        public function createScript1(): Response #makes new script w default values
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $newScript1 = new Script();
+            $newScript1->setLinesPerActor(0);
+            $newScript1->setWordsPerActor('0');
+            $newScript1->setMentionsPerActor('0');
+            $newScript1->setMoviesPerYear(10);
+            $newScript1->setPercentOfFails(5);
+
+            // tell Doctrine to save the script data for use in future (but no db queries yet)
+            $entityManager->persist($newScript1);
+
+            // saves data, executes INSERT query 
+            $entityManager->flush();
+            $response = new Response();
+            $response->send();
+            return $this->redirectToRoute('scripts');
+
+    }
 
 
 
