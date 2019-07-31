@@ -125,7 +125,7 @@
             $actor_name = $script_admin->getActorName();
             $company = $script_admin->getCompany();
             //count # of lines 
-            $lines = preg_split("/" . $actor_name . "/", $body);
+            $lines = preg_split("/" . $actor_name . ":/", $body);
             $lines_per_actor = count($lines);
             //cache that
             $script_admin->setLinesPerActor($lines_per_actor);
@@ -133,7 +133,7 @@
             $words_per_actor = str_word_count($body);
             $script_admin->setWordsPerActor($words_per_actor);
             #mentions in a script #todo elaborate
-            $mentions_per_actor = substr_count( "/" . $body . "\w/", $actor_name);
+            $mentions_per_actor = substr_count( "/" . $body . "\s/", $actor_name);
             $script_admin->setMentionsPerActor($mentions_per_actor); 
             switch ($company) {
                 case 'Netflix':
