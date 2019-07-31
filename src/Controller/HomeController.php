@@ -133,7 +133,7 @@
             $words_per_actor = str_word_count($body);
             $script_admin->setWordsPerActor($words_per_actor);
             #mentions in a script #todo elaborate
-            $mentions_per_actor = substr_count($body, $actor_name);
+            $mentions_per_actor = substr_count( "/" . $body . "\w/", $actor_name);
             $script_admin->setMentionsPerActor($mentions_per_actor); 
             switch ($company) {
                 case 'Netflix':
